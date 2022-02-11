@@ -135,8 +135,8 @@ const duel = () => {
     renderCompDuo()
     document.querySelectorAll('.bot-btn').forEach(btn => btn.classList.add('hide'))
     setTimeout(() => {
-        axios.post('/api/duel', {compDuo, playerDuo})
-            .then(({data}) => {
+        axios.post('/api/duel', { compDuo, playerDuo })
+            .then(({ data }) => {
                 resultsText.textContent = data
                 playAgainBtn.classList.remove('hide')
                 getPlayerStats()
@@ -159,7 +159,7 @@ const reset = () => {
 
 const getPlayerStats = () => {
     axios.get('/api/player')
-        .then(({data: {wins, losses}}) => {
+        .then(({ data: { wins, losses } }) => {
             winsText.textContent = `Wins: ${wins}`
             lossesTest.textContent = `Losses: ${losses}`
         })
@@ -167,9 +167,9 @@ const getPlayerStats = () => {
 
 const getAllBots = () => {
     axios.get('/api/robots')
-        .then(({data}) => {
+        .then(({ data }) => {
             allBotsDiv.innerHTML = ''
-        
+
             data.forEach(bot => {
                 let botHtml = makeRobotDisplayCard(bot)
                 allBotsDiv.innerHTML += botHtml
