@@ -1,6 +1,19 @@
 const express = require('express')
 const path = require('path')
 const app = express()
+
+// include and initialize the rollbar library with your access token
+var Rollbar = require('rollbar')
+var rollbar = new Rollbar({
+    accessToken: '744d207195a440eda58caef1fb1e0920',
+    captureUncaught: true,
+    captureUnhandledRejections: true,
+})
+
+// record a generic message and send it to Rollbar
+rollbar.log('Hello world!')
+
+
 const { bots, playerRecord } = require('./data.js')
 const { shuffleArray } = require('./utils')
 
@@ -8,14 +21,17 @@ app.use('/js', express.static(path.join(__dirname, 'public/index.js')))
 app.use('/styles', express.static(path.join(__dirname, 'public/index.css')))
 
 app.get('/', (req, res) => {
+    rollbar.info("html File was served successfully");
     res.sendFile(path.join(__dirname, './public/index.html'))
 })
 
 app.get('/js', (req, res) => {
+    rollbar.info("Javascipt file was linked")
     res.sendFile(path.join(__dirname, './public/index.js'))
 })
 
 app.get('/styles', (req, res) => {
+    rollbar.info("Css file was linked")
     res.sendFile(path.join(__dirname, './public/index.css'))
 })
 
@@ -33,6 +49,7 @@ app.get('/api/robots', (req, res) => {
 })
 
 app.get('/api/robots/five', (req, res) => {
+    rollbar.info("User selected to shuffle array")
     try {
         let shuffled = shuffleArray(bots)
         let choices = shuffled.slice(0, 5)
@@ -45,6 +62,7 @@ app.get('/api/robots/five', (req, res) => {
 })
 
 app.post('/api/duel', (req, res) => {
+    rollbar.info("user initiated a duel")
     try {
         // getting the duos from the front end
         let { compDuo, playerDuo } = req.body
