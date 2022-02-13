@@ -26,12 +26,10 @@ app.get('/', (req, res) => {
 })
 
 app.get('/js', (req, res) => {
-    rollbar.info("Javascipt file was linked")
     res.sendFile(path.join(__dirname, './public/index.js'))
 })
 
 app.get('/styles', (req, res) => {
-    rollbar.info("Css file was linked")
     res.sendFile(path.join(__dirname, './public/index.css'))
 })
 
@@ -40,6 +38,7 @@ app.use(express.json())
 
 
 app.get('/api/robots', (req, res) => {
+    rollbar.info("user selected to see all bots")
     try {
         res.status(200).send(bots)
     } catch (error) {
